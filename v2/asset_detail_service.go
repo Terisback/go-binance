@@ -89,6 +89,7 @@ type CoinInfo struct {
 	Trading           bool      `json:"trading"`
 	WithdrawAllEnable bool      `json:"withdrawAllEnable"`
 	Withdrawing       string    `json:"withdrawing"`
+	WithdrawFee       string    `json:"withdrawFee"`
 }
 
 type Network struct {

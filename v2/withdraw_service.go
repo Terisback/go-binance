@@ -18,6 +18,7 @@ type CreateWithdrawService struct {
 	amount             string
 	transactionFeeFlag *bool
 	name               *string
+	walletType         *int
 }
 
 // Coin sets the coin parameter (MANDATORY).
@@ -68,6 +69,19 @@ func (s *CreateWithdrawService) Name(v string) *CreateWithdrawService {
 	return s
 }
 
+type WalletType int
+
+const (
+	Spot    WalletType = 0
+	Funding WalletType = 1
+)
+
+func (s *CreateWithdrawService) WalletType(wt WalletType) *CreateWithdrawService {
+	rwt := int(wt)
+	s.walletType = &rwt
+	return s
+}
+
 // Do sends the request.
 func (s *CreateWithdrawService) Do(ctx context.Context) (*CreateWithdrawResponse, error) {
 	r := &request{
@@ -92,6 +106,9 @@ func (s *CreateWithdrawService) Do(ctx context.Context) (*CreateWithdrawResponse
 	}
 	if v := s.name; v != nil {
 		r.setParam("name", *v)
+	}
+	if v := s.walletType; v != nil {
+		r.setParam("walletType", *v)
 	}
 
 	data, err := s.c.callAPI(ctx, r)
